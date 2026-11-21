@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ink & Click - Sistem de Management pentru Biblioteca Hibrida
 
-## Getting Started
+**Ink & Click** este o aplicatie web pentru gestionarea unei biblioteci hibride, care combina administrarea volumelor fizice (inventar pe rafturi si imprumuturi) cu editii digitale (achizitii in format PDF, EPUB, MP3).
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Etapa 1 - Proiectarea si Implementarea Bazei de Date
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Baza de date este implementata in **PostgreSQL** (gazduita pe **Supabase**) si contine 6 tabele relationale cu chei primare, chei straine si constrangeri de integritate (`UNIQUE`, `CHECK`, `NOT NULL`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Structura bazei de date
+- **`carti`**: catalogul general de titluri, autori si coduri ISBN unice.
+- **`utilizatori`**: evidenta utilizatorilor si a rolurilor acestora (`cititor`, `bibliotecar`, `admin`).
+- **`inventar_fizic`**: exemplarele tiparite asociate cartilor, locatia pe raft si starea lor (`disponibil`, `imprumutat`, `deteriorat`, `pierdut`).
+- **`imprumuturi_fizice`**: evidenta imprumuturilor de exemplare fizice, data imprumutului si data scadenta.
+- **`editii_virtuale`**: variantele digitale ale cartilor (`PDF`, `EPUB`, `MP3`) si preturile de achizitie.
+- **`achizitii_virtuale`**: istoricul tranzactiilor prin care utilizatorii achizitioneaza editii digitale.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Fisiere aferente Etapei 1
+- `schema.sql` - scriptul SQL pentru crearea tabelelor si a constrangerilor.
+- `fixtures.sql` - datele initiale de test inserate in baza de date.
+- `DECISIONS.md` - deciziile de arhitectura si modelare a bazei de date.
+- `AI_LOG.md` - jurnalul de utilizare a instrumentelor AI pe parcursul proiectului.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Etapa 2 - Interfata Web CRUD (Next.js + Supabase)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Interfata web este construita in **Next.js** cu o tematica de biblioteca clasica, conectata direct la baza de date PostgreSQL prin Supabase API.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Structura si functionalitatile paginii
 
-## Deploy on Vercel
+1. **Bara de Navigare (Selector Tabele)**
+   Permite comutarea rapida intre toate cele 6 tabele ale bazei de date:
+   - **Carti (`carti`)**
+   - **Utilizatori (`utilizatori`)**
+   - **Inventar Fizic (`inventar_fizic`)**
+   - **Imprumuturi Fizice (`imprumuturi_fizice`)**
+   - **Editii Virtuale (`editii_virtuale`)**
+   - **Achizitii Virtuale (`achizitii_virtuale`)**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. **Formular Dinamic (Create / Update)**
+   - Se adapteaza automat in functie de tabela selectata.
+   - Permite adaugarea de inregistrari noi (**Adauga**) si modificarea celor existente (**Editeaza** -> **Salveaza**).
+   - Afiseaza in timp real erorile returnate de PostgreSQL la incalcarea constrangerilor (`UNIQUE`, `FOREIGN KEY`, `CHECK`).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Zona de Vizualizare si Cautare (Read / Delete)**
+   - Include o bara de cautare rapida pentru filtrarea inregistrarilor din tabela activa.
+   - Ofera comutare intre modul **Fise Biblioteca** (carduri) si modul **Tabel Clasic**.
+   - Fiecare inregistrare dispune de butoane dedicate pentru **Editeaza** si **Sterge** (cu fereastra de confirmare).
+
+---
+
+## Rulare Locala
+
+1. Instalati dependentele:
+   ```bash
+   npm install
