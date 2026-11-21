@@ -1,41 +1,36 @@
-# Ink and Click - Sistem de Management pentru o Bibliotecă Hibridă
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Descrierea temei
-Proiectul „Ink and Click” este o aplicație web destinată digitalizării și automatizării proceselor dintr-o bibliotecă modernă. Sistemul gestionează un model hibrid, permițând atât evidența și împrumutul cărților fizice, cât și achiziționarea de ediții virtuale (e-books și audiobooks). Aplicația oferă trasabilitate completă a stocurilor, istoricului de împrumuturi și tranzacțiilor digitale.
+## Getting Started
 
-## Roluri și drepturi de acces
-Sistemul implementează 3 tipuri de utilizatori:
-1. **Administrator:** Gestionează setările globale ale sistemului, utilizatorii și drepturile acestora.
-2. **Bibliotecar:** Gestionează inventarul fizic, adaugă cărți noi în catalog, monitorizează împrumuturile și returnările.
-3. **Cititor (Client):** Poate vizualiza catalogul, împrumuta cărți fizice și achiziționa ediții digitale.
+First, run the development server:
 
-## Beneficii aduse
-* **Eficiență:** Eliminarea registrelor fizice și gestionarea stocului în timp real.
-* **Control hibrid:** Integrarea inventarului fizic cu cel digital într-o singură bază de date unificată.
-* **Accesibilitate:** Cititorii își pot urmări online termenele scadente și istoricul de lectură.
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Tehnologii utilizate (Backend / Bază de date)
-* **SGBD:** PostgreSQL (prin Supabase)
-* **Modelare:** Minimum 6 tabele (Utilizatori, Cărți, Inventar_Fizic, Imprumuturi_Fizice, Editii_Virtuale, Achizitii_Virtuale) relaționate corespunzător prin chei primare și străine.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-* ## Descrierea Paginilor (Interfata CRUD)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Aplicatia **Ink & Click** este organizata sub forma unui panou centralizat (Dashboard) construit in Next.js, conectat direct la baza de date PostgreSQL prin Supabase API.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-### 1. Bara de Navigare (Selector Tabele)
-Permite comutarea rapida intre cele 6 tabele ale bazei de date:
-- **Carti** (`carti`): catalogul general de titluri, autori si coduri ISBN.
-- **Utilizatori** (`utilizatori`): gestionarea conturilor si a rolurilor (`cititor`, `bibliotecar`, `admin`).
-- **Inventar Fizic** (`inventar_fizic`): evidenta exemplarelor fizice, locatiei pe raft si starii acestora.
-- **Imprumuturi Fizice** (`imprumuturi_fizice`): urmarirea imprumuturilor active, datei de imprumut si scadentei.
-- **Editii Virtuale** (`editii_virtuale`): variantele digitale disponibile (PDF, EPUB, MP3) si preturile lor.
-- **Achizitii Virtuale** (`achizitii_virtuale`): istoricul tranzactiilor digitale efectuate de utilizatori.
+## Learn More
 
-### 2. Sectiunea Formular (Create / Update)
-- Se adapteaza dinamic in functie de tabela selectata.
-- Permite introducerea de inregistrari noi (**Adauga**) sau modificarea celor existente (**Editeaza** -> **Salveaza**).
-- Afiseaza mesaje de eroare in timp real direct din PostgreSQL la incalcarea constrangerilor (`UNIQUE`, `FOREIGN KEY`, `CHECK`).
+To learn more about Next.js, take a look at the following resources:
 
-### 3. Sectiunea Tabel (Read / Delete)
-- Afiseaza toate inregistrarile din tabela curenta, ordonate dupa cheia primara.
-- Ofera butoane rapide pe fiecare rand pentru **Editeaza** si **Sterge** (cu fereastra de confirmare).
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
