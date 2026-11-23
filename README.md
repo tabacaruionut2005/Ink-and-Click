@@ -51,8 +51,18 @@ Interfata web este construita in **Next.js** cu o tematica de biblioteca clasica
 
 ---
 
-## Rulare Locala
+---
 
-1. Instalati dependentele:
-   ```bash
-   npm install
+## Etapa 3 - Autentificare si Controlul Accesului pe Roluri (RBAC)
+
+Aplicatia integreaza sistemul de autentificare **Supabase Auth**, corelat cu tabela `utilizatori` pentru gestionarea permisiunilor in functie de rol.
+
+### Fluxul de autentificare
+- **Pagina `/login`**: permite autentificarea utilizatorilor existenti sau inregistrarea unui cont nou (cu nume, email si parola). Conturile nou create primesc automat rolul implicit de `cititor` in tabela `utilizatori`.
+- **Protectia rutelor**: accesul la pagina principala (`/`) este restrictionat; utilizatorii neautentificati sunt redirectionati automat catre `/login`.
+- **Sesiune si Deconectare**: antetul aplicatiei afiseaza adresa de email a utilizatorului conectat, badge-ul rolului activ si butonul de **Deconectare**.
+
+### Permisiuni pe roluri
+- **`cititor`**: acces **doar-citire** (fara formular de adaugare si fara actiuni de editare/stergere) la tabelele de catalog (`carti`, `inventar_fizic`, `editii_virtuale`).
+- **`bibliotecar`**: acces complet CRUD (Adauga / Editeaza / Sterge) pe toate tabelele operationale (`carti`, `inventar_fizic`, `imprumuturi_fizice`, `editii_virtuale`, `achizitii_virtuale`), fara acces la tabela `utilizatori`.
+- **`admin`**: acces complet CRUD pe toate cele 6 tabele, inclusiv administrarea conturilor si modificarea rolurilor din tabela `utilizatori`.
